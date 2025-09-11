@@ -29,7 +29,7 @@ const Carousel = ({ items, interval = 5000 }) => {
   }, [items.length, interval]);
 
   return (
-    <div className="relative w-full p-6 mx-auto overflow-hidden rounded-2xl ">
+    <div className="relative w-full p-6 mx-auto overflow-hidden mt-16 rounded-2xl ">
       <div className="relative h-64 md:h-96 rounded-md">
         <AnimatePresence mode="wait" custom={index}>
           <motion.img

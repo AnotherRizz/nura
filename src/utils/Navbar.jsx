@@ -22,34 +22,22 @@ import {
 
 const menuComponents = [
   {
-    title: "Alert Dialog",
-    to: "/alert-dialog",
-    description: "A modal dialog that interrupts the user.",
+    title: "Bronze",
+    to: "/paket",
+    description: "50 Mbps, Rp 270.000/bulan.",
+    color: "text-yellow-600", // custom warna judul
   },
   {
-    title: "Hover Card",
-    to: "/hover-card",
-    description: "Preview content available behind a link.",
+    title: "Silver",
+    to: "/paket",
+    description: "100 Mbps, Rp 335.000/bulan.",
+    color: "text-gray-400", // custom warna judul
   },
   {
-    title: "Progress",
+    title: "Gold",
     to: "/progress",
-    description: "Indicator showing task completion progress.",
-  },
-  {
-    title: "Scroll-area",
-    to: "/scroll-area",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    to: "/tabs",
-    description: "Layered sections of content (tab panels).",
-  },
-  {
-    title: "Tooltip",
-    to: "/tooltip",
-    description: "Popup with extra info when hover/focus.",
+    description: "150 Mbps, Rp 600.000/bulan.",
+    color: "text-yellow-400", // custom warna judul
   },
 ];
 
@@ -80,14 +68,16 @@ export default function Navbar() {
 
               {/* Components */}
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                <NavigationMenuTrigger>Paket</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  <ul className="grid w-[400px] gap-2 md:w-[400px] md:grid-cols-1 ">
                     {menuComponents.map((item) => (
                       <ListItem
                         key={item.title}
                         title={item.title}
-                        to={item.to}>
+                        to={item.to}
+                        color={item.color} 
+                      >
                         {item.description}
                       </ListItem>
                     ))}
@@ -185,15 +175,13 @@ export default function Navbar() {
   );
 }
 
-function ListItem({ title, children, to, ...props }) {
+function ListItem({ title, children, to, color = "text-white", ...props }) {
   return (
     <li {...props}>
       <NavigationMenuLink asChild>
-        <Link to={to}>
-          <div className="text-sm font-medium">{title}</div>
-          <p className="text-muted-foreground line-clamp-2 text-sm">
-            {children}
-          </p>
+        <Link to={to} className="block p-2 hover:bg-gray-100 rounded-lg">
+          <div className={`text-sm font-semibold ${color}`}>{title}</div>
+          <p className="line-clamp-2 text-sm text-gray-800">{children}</p>
         </Link>
       </NavigationMenuLink>
     </li>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import MainSection from "../section/MainSection";
 import FeaturesSection from "../section/FeaturesSection";
+import Carousel from "../utils/Carousel";
 
 // contoh data produk (dummy dulu, nanti bisa fetch dari API Laravel)
 const produk = [
@@ -33,6 +34,22 @@ const produk = [
   },
 ];
 
+const items = [
+  {
+    id: 1,
+    image: "../banner/1.png",
+  },
+  {
+    id: 2,
+    image: "../banner/3.png",
+  },
+  {
+    id: 3,
+    image: "../banner/2.png",
+  },
+];
+
+
 export default function HomePage() {
   return (
     <div className="font-inter">
@@ -43,6 +60,9 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <MainSection />
+      <div className=" flex items-center justify-center">
+      <Carousel items={items} interval={4000}/>
+    </div>
 
       {/* Keunggulan */}
       <FeaturesSection/>

@@ -2,8 +2,9 @@ import React from 'react'
 
 const MainSection = () => {
   return (
-       <section className="bg-white min-h-screen flex items-center py-20">
-        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+       <section className="bg- min-h-screen flex items-center py-20">
+         <span className=' w-80 h-80 absolute hidden md:block top-60 right-80 bg-gradient-to-br from-indigo-200 to-teal-300 rounded-full blur-md opacity-50 '></span>
+        <div className="container z-10 mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           {/* Teks */}
           <div className="text-center md:text-left">
             <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-gray-900 mb-6">
@@ -14,7 +15,7 @@ const MainSection = () => {
               <br />
               untuk Rumah & Kantor
             </h1>
-            <p className="text-md  text-gray-600 mb-8 max-w-xl mx-auto md:mx-0">
+            <p className="text-sm  text-gray-600 mb-8 max-w-xl mx-auto md:mx-0">
               Nikmati internet super cepat, stabil, dan aman dengan layanan
               terbaik dari kami. Cocok untuk kebutuhan{" "}
               <span className="font-semibold">streaming, gaming</span>, hingga
@@ -33,7 +34,7 @@ const MainSection = () => {
             <img
               src="./banner1.png"
               alt="Banner Internet"
-              className="w-full max-w-md md:max-w-lg drop-shadow-2xl"
+              className="w-full max-w-md md:max-w-xl -mt-10 drop-shadow-2xl"
             />
           </div>
         </div>

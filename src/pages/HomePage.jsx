@@ -4,6 +4,7 @@ import FeaturesSection from "../section/FeaturesSection";
 import Carousel from "../utils/Carousel";
 import StatsParallax from "../utils/StatsParallax";
 import Product from "../section/Product";
+import Payments from "../section/Payments";
 
 // contoh data produk (dummy dulu, nanti bisa fetch dari API Laravel)
 
@@ -30,12 +31,15 @@ export default function HomePage() {
       <span className="fixed bottom-6 right-6 z-50 cursor-pointer">
         <img src="/images/cs.svg" className="w-12 z-50" alt="CS" />
       </span>
+      <span className="w-full min-h-screen bg-gradient-to-br from-white to-sky-100/50 block fixed top-0 -z-10 left-0"></span>
 
       {/* Hero Section */}
       <MainSection />
-      <div className=" flex items-center bg-white  justify-center">
+      <div className=" flex items-center  justify-center">
         <Carousel items={items} interval={4000} />
       </div>
+
+      <Payments/>
      
 
       {/* Keunggulan */}

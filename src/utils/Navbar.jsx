@@ -1,5 +1,4 @@
-// src/components/Navbar.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   CircleCheckIcon,
@@ -25,27 +24,41 @@ const menuComponents = [
     title: "Bronze",
     to: "/paket",
     description: "50 Mbps, Rp 270.000/bulan.",
-    color: "text-yellow-600", // custom warna judul
+    color: "text-yellow-600",
   },
   {
     title: "Silver",
     to: "/paket",
     description: "100 Mbps, Rp 335.000/bulan.",
-    color: "text-gray-400", // custom warna judul
+    color: "text-gray-400",
   },
   {
     title: "Gold",
     to: "/progress",
     description: "150 Mbps, Rp 600.000/bulan.",
-    color: "text-yellow-400", // custom warna judul
+    color: "text-yellow-400",
   },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Deteksi scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50 font-inter">
+    <nav
+      className={`w-full fixed top-0 left-0 z-50 font-inter transition-colors duration-300 ${
+        isScrolled ? "bg-white/90 backdrop-blur-xs" : "bg-transparent"
+      }`}
+    >
       <div className="container mx-auto flex items-center justify-between md:justify-around px-6 py-3">
         {/* Logo */}
         <Link to="/" className="text-md font-bold flex gap-2 items-center">
@@ -57,26 +70,25 @@ export default function Navbar() {
         <div className="hidden md:block">
           <NavigationMenu>
             <NavigationMenuList>
-              {/* Home */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
-                  className={navigationMenuTriggerStyle()}>
+                  className={navigationMenuTriggerStyle()}
+                >
                   <Link to="/">Home</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              {/* Components */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Paket</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-2 md:w-[400px] md:grid-cols-1 ">
+                  <ul className="grid w-[400px] gap-2 md:w-[400px] md:grid-cols-1">
                     {menuComponents.map((item) => (
                       <ListItem
                         key={item.title}
                         title={item.title}
                         to={item.to}
-                        color={item.color} 
+                        color={item.color}
                       >
                         {item.description}
                       </ListItem>
@@ -85,39 +97,13 @@ export default function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              {/* Docs */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
-                  className={navigationMenuTriggerStyle()}>
+                  className={navigationMenuTriggerStyle()}
+                >
                   <Link to="/docs">Docs</Link>
                 </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              {/* With Icon */}
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-4">
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link to="#" className="flex-row items-center gap-2">
-                          <CircleHelpIcon /> Backlog
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link to="#" className="flex-row items-center gap-2">
-                          <CircleIcon /> To Do
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link to="#" className="flex-row items-center gap-2">
-                          <CircleCheckIcon /> Done
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -126,12 +112,13 @@ export default function Navbar() {
         {/* Mobile Hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-gray-700 focus:outline-none">
+          className="md:hidden text-gray-700 focus:outline-none"
+        >
           {mobileOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Sidebar dengan animasi */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.aside
@@ -139,7 +126,8 @@ export default function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 md:hidden">
+            className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 md:hidden"
+          >
             <div className="flex justify-between items-center p-4 border-b">
               <span className="font-bold text-blue-600">Menu</span>
               <button onClick={() => setMobileOpen(false)}>
@@ -160,11 +148,6 @@ export default function Navbar() {
               <li>
                 <Link to="/docs" onClick={() => setMobileOpen(false)}>
                   Docs
-                </Link>
-              </li>
-              <li>
-                <Link to="/with-icon" onClick={() => setMobileOpen(false)}>
-                  With Icon
                 </Link>
               </li>
             </ul>

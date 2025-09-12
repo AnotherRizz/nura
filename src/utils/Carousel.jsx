@@ -29,7 +29,7 @@ const Carousel = ({ items, interval = 5000 }) => {
   }, [items.length, interval]);
 
   return (
-    <div className="relative w-full p-6 mx-auto overflow-hidden mt-16 rounded-2xl ">
+    <div className="hidden md:block relative w-full p-6 mx-auto overflow-hidden mt-16 rounded-2xl ">
       <div className="relative h-64 md:h-96 rounded-md">
         <AnimatePresence mode="wait" custom={index}>
           <motion.img
@@ -48,7 +48,7 @@ const Carousel = ({ items, interval = 5000 }) => {
       {/* Controls */}
       <button
         onClick={prevSlide}
-        className="absolute top-1/2 -translate-y-1/2 left-4 bg-black/10 p-2 rounded-full hover:bg-black/60">
+        className="absolute top-1/2 -translate-y-1/2 left-10 bg-black/10 p-2 rounded-full hover:bg-black/60">
         <ChevronLeft className="w-6 h-6 text-white" />
       </button>
       <button

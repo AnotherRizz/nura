@@ -6,25 +6,25 @@ const tabsData = [
   {
     icon: "/feature/1.svg",
     label: "Kecepatan Tinggi",
-    desc: "Website kami sangat cepat diakses, bahkan di jaringan lambat.",
+    desc: "Nikmati layanan internet berkecepatan tinggi hingga ratusan Mbps, stabil untuk streaming, gaming online, serta kebutuhan kerja harian Anda.",
   },
-  {
-    icon: "/feature/2.svg",
-    label: "Support 24/7",
-    desc: "Kami menyediakan dukungan 24/7 untuk semua pengguna.",
-  },
-  {
-    icon: "/feature/3.svg",
-    label: "Harga Terjangkau",
-    desc: "Harga kami terjangkau dengan kualitas premium.",
-  },
+{
+  icon: "/feature/2.svg",
+  label: "Support 24/7",
+  desc: "Tim dukungan kami siap membantu kapan saja selama 24 jam setiap hari, memastikan pengalaman pengguna tetap lancar tanpa hambatan."
+},
+{
+  icon: "/feature/3.svg",
+  label: "Harga Terjangkau",
+  desc: "Kami menawarkan layanan berkualitas premium dengan harga yang tetap ramah di kantong agar semua orang dapat menikmatinya tanpa beban."
+}
 ];
 
 export default function FeaturesSection() {
   const [selectedTab, setSelectedTab] = useState(tabsData[0]);
 
   return (
-    <section className="py-16 min-h-screen bg-gray-50">
+    <section className="py-16 min-h-screen ">
       <div className="container mx-auto px-6">
         <h2 className="text-3xl font-bold text-center mb-12">
           Kenapa Memilih Kami?
@@ -42,8 +42,7 @@ export default function FeaturesSection() {
                   : " text-gray-800"
               }`}
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-            >
+              transition={{ duration: 0.2 }}>
               {tab.label}
             </motion.button>
           ))}
@@ -57,8 +56,7 @@ export default function FeaturesSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
+              transition={{ duration: 0.3 }}>
               <FeatureCard
                 icon={selectedTab.icon}
                 title={selectedTab.label}

@@ -43,27 +43,17 @@ export default function StatsParallaxFull() {
 
   return (
     <section className="relative my-10 flex items-center justify-center overflow-hidden">
-      {/* Background layer */}
-      <div
-        className="fixed inset-0 bg-cover bg-center -z-20"
-        style={{
-          backgroundImage: "url('/paralax.jpg')",
-        }}
-      ></div>
 
-      {/* Overlay semi gelap */}
-      {/* <div className="absolute inset-0 bg-black/40 -z-10"></div> */}
 
       {/* Stats cards */}
       <div className="relative container mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-10 text-center z-10">
         {statsData.map((stat, i) => (
           <div
             key={stat.id}
-            className="p-8 bg-white/10 backdr rounded-2xl shadow-lg w-64 hover:scale-105 transition-transform"
+            className="p-8 rounded-2xl border border-blue-600 w-64 "
           >
-            {stat.icon}
-            <h3 className="text-5xl font-extrabold text-blue-600 mt-2">{counters[i]}</h3>
-            <p className="mt-2 text-white">{stat.label}</p>
+            <h3 className="text-5xl  text-blue-600 mt-2">{counters[i]}+</h3>
+            <p className="mt-2 text-gray-700">{stat.label}</p>
           </div>
         ))}
       </div>

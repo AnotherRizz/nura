@@ -18,23 +18,24 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Button } from "../components/ui/button";
 
 const menuComponents = [
   {
     title: "Bronze",
-    to: "/paket",
+    to: "/product",
     description: "50 Mbps, Rp 270.000/bulan.",
     color: "text-yellow-600",
   },
   {
     title: "Silver",
-    to: "/paket",
+    to: "/product",
     description: "100 Mbps, Rp 335.000/bulan.",
     color: "text-gray-400",
   },
   {
     title: "Gold",
-    to: "/progress",
+    to: "/product",
     description: "150 Mbps, Rp 600.000/bulan.",
     color: "text-yellow-400",
   },
@@ -56,7 +57,7 @@ export default function Navbar() {
   return (
     <nav
       className={`w-full fixed top-0 left-0 z-50 font-inter transition-colors duration-300 ${
-        isScrolled ? "bg-white/90 backdrop-blur-xs" : "bg-transparent"
+        isScrolled ? "bg-white " : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between md:justify-around px-6 py-3">
@@ -103,6 +104,16 @@ export default function Navbar() {
                   className={navigationMenuTriggerStyle()}
                 >
                   <Link to="/docs">Docs</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <a href="https://wa.me/6281281338001" target="_blank">
+                    <Button className="text-xs bg-gradient-to-r from-indigo-800 to-blue-900 hover:text-white cursor-pointer">Hubungi Kami</Button>
+                </a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

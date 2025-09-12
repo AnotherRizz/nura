@@ -81,7 +81,7 @@ const Product = () => {
                   ))}
                 </ul>
                 <a
-                  href="#"
+                  href="/product"
                   className={`px-6 py-1.5 rounded-lg font-semibold transition ${
                     index === 1
                       ? "bg-white text-blue-600 hover:bg-gray-100"

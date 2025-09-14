@@ -14,7 +14,7 @@ export default function ScrollingPayments({ icons = [], speed = 20000 }) {
     <section className="py-12 ">
       <div className="container mx-auto px-6">
         <div className="text-center">
-          <h3 className="text-2xl font-semibold mb-2">
+          <h3 className="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-br from-indigo-950 to-blue-700 mb-4">
             Fleksibilitas Pembayaran
           </h3>
           <p className="text-gray-600 mb-6 mx-auto max-w-2xl">

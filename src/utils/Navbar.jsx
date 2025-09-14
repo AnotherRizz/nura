@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import {
-  CircleCheckIcon,
-  CircleHelpIcon,
-  CircleIcon,
-  Menu,
-  X,
-} from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import {
@@ -23,19 +17,19 @@ import { Button } from "../components/ui/button";
 const menuComponents = [
   {
     title: "Bronze",
-    to: "/product",
+    to: "#paket",
     description: "50 Mbps, Rp 270.000/bulan.",
     color: "text-yellow-600",
   },
   {
     title: "Silver",
-    to: "/product",
+    to: "#paket",
     description: "100 Mbps, Rp 335.000/bulan.",
     color: "text-gray-400",
   },
   {
     title: "Gold",
-    to: "/product",
+    to: "#paket",
     description: "150 Mbps, Rp 600.000/bulan.",
     color: "text-yellow-400",
   },
@@ -44,6 +38,8 @@ const menuComponents = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   // Deteksi scroll
   useEffect(() => {
@@ -71,15 +67,31 @@ export default function Navbar() {
         <div className="hidden md:block">
           <NavigationMenu>
             <NavigationMenuList>
+
+              {/* Home */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link to="/">Home</Link>
+                  {isHome ? (
+                    <a href="#home">Home</a>
+                  ) : (
+                    <Link to="/#home">Home</Link>
+                  )}
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              {/* About */}
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <a href="#about">Tentang Kami</a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
+              {/* Paket */}
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Paket</NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -97,25 +109,40 @@ export default function Navbar() {
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-
+               {/* About */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <Link to="/docs">Docs</Link>
+                  <a href="#pembayaran">Pembayaran</a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
+
+              {/* Link biasa */}
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <a href="#faq">FAQ</a>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              {/* Tombol WA */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
                   <a href="https://wa.me/6281281338001" target="_blank">
-                    <Button className="text-xs bg-gradient-to-r from-indigo-800 to-blue-900 hover:text-white cursor-pointer">Hubungi Kami</Button>
-                </a>
+                    <Button className="text-xs bg-gradient-to-r from-indigo-800 to-blue-900 hover:text-white cursor-pointer">
+                      Hubungi Kami
+                    </Button>
+                  </a>
                 </NavigationMenuLink>
               </NavigationMenuItem>
+
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -141,25 +168,47 @@ export default function Navbar() {
           >
             <div className="flex justify-between items-center p-4 border-b">
               <span className="font-bold text-blue-600">Menu</span>
-              <button onClick={() => setMobileOpen(false)}>
+              {/* <button onClick={() => setMobileOpen(false)}>
                 <X size={24} />
-              </button>
+              </button> */}
             </div>
             <ul className="flex flex-col gap-4 p-6 font-medium">
               <li>
-                <Link to="/" onClick={() => setMobileOpen(false)}>
-                  Home
-                </Link>
+                {isHome ? (
+                  <a href="#home" onClick={() => setMobileOpen(false)}>
+                    Home
+                  </a>
+                ) : (
+                  <Link to="/#home" onClick={() => setMobileOpen(false)}>
+                    Home
+                  </Link>
+                )}
+              </li>
+               <li>
+                <a href="#about" onClick={() => setMobileOpen(false)}>
+                  Tentang Kami
+                </a>
               </li>
               <li>
-                <Link to="/components" onClick={() => setMobileOpen(false)}>
-                  Components
-                </Link>
+                {isHome ? (
+                  <a href="#paket" onClick={() => setMobileOpen(false)}>
+                    Paket
+                  </a>
+                ) : (
+                  <Link to="/#paket" onClick={() => setMobileOpen(false)}>
+                    Paket
+                  </Link>
+                )}
               </li>
               <li>
-                <Link to="/docs" onClick={() => setMobileOpen(false)}>
-                  Docs
-                </Link>
+                <a href="#pembayaran" onClick={() => setMobileOpen(false)}>
+                  Pembayaran
+                </a>
+              </li>
+               <li>
+                <a href="#faq" onClick={() => setMobileOpen(false)}>
+                  FAQ
+                </a>
               </li>
             </ul>
           </motion.aside>
@@ -170,13 +219,23 @@ export default function Navbar() {
 }
 
 function ListItem({ title, children, to, color = "text-white", ...props }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <li {...props}>
       <NavigationMenuLink asChild>
-        <Link to={to} className="block p-2 hover:bg-gray-100 rounded-lg">
-          <div className={`text-sm font-semibold ${color}`}>{title}</div>
-          <p className="line-clamp-2 text-sm text-gray-800">{children}</p>
-        </Link>
+        {isHome ? (
+          <a href={to} className="block p-2 hover:bg-gray-100 rounded-lg">
+            <div className={`text-sm font-semibold ${color}`}>{title}</div>
+            <p className="line-clamp-2 text-sm text-gray-800">{children}</p>
+          </a>
+        ) : (
+          <Link to={`/${to}`} className="block p-2 hover:bg-gray-100 rounded-lg">
+            <div className={`text-sm font-semibold ${color}`}>{title}</div>
+            <p className="line-clamp-2 text-sm text-gray-800">{children}</p>
+          </Link>
+        )}
       </NavigationMenuLink>
     </li>
   );

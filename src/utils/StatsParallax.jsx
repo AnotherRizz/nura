@@ -46,14 +46,14 @@ export default function StatsParallaxFull() {
 
 
       {/* Stats cards */}
-      <div className="relative container mx-auto px-6 flex flex-col md:flex-row justify-center items-center gap-10 text-center z-10">
+      <div className="relative container mx-auto px-6 flex flex-row justify-center items-center gap-5 text-center z-10">
         {statsData.map((stat, i) => (
           <div
             key={stat.id}
-            className="p-8 rounded-2xl border border-blue-600 w-64 "
+            className="p-2 w-64 "
           >
-            <h3 className="text-5xl  text-blue-600 mt-2">{counters[i]}+</h3>
-            <p className="mt-2 text-gray-700">{stat.label}</p>
+            <h3 className="text-3xl  text-blue-900 mt-2">{counters[i]}+</h3>
+            <p className="mt-2 text-gray-700 text-xs md:text-sm">{stat.label}</p>
           </div>
         ))}
       </div>

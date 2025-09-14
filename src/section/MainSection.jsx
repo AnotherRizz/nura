@@ -1,4 +1,5 @@
 import React from 'react'
+import StatsParallaxFull from '../utils/StatsParallax'
 
 const MainSection = () => {
   return (
@@ -27,6 +28,7 @@ const MainSection = () => {
             >
               Lihat Paket Internet
             </a>
+            <StatsParallaxFull/>
           </div>
 
           {/* Gambar */}

@@ -5,8 +5,8 @@ import Carousel from "../utils/Carousel";
 import StatsParallax from "../utils/StatsParallax";
 import Product from "../section/Product";
 import Payments from "../section/Payments";
-
-// contoh data produk (dummy dulu, nanti bisa fetch dari API Laravel)
+import FeatureSection from "../section/FeatureSection";
+import QuestionSection from "../section/QuestionSection";
 
 const items = [
   {
@@ -33,23 +33,25 @@ export default function HomePage() {
       <span className="w-full min-h-screen bg-gradient-to-br from-white to-sky-100/50 block fixed top-0 -z-10 left-0"></span>
 
       {/* Hero Section */}
+      <section id="home">
+
       <MainSection />
+      </section>
 
-      {/* Keunggulan */}
-      <FeaturesSection />
-      {/* <div className=" flex items-center  justify-center">
-        <Carousel items={items} interval={4000} />
-      </div> */}
-
+      {/* <FeaturesSection /> */}
+      <section id="about" className="p-10">
+        <FeatureSection />
+      </section>
+      <section id="pembayaran">
       <Payments />
+      </section>
 
-      <div className="">
-        <StatsParallax />
-      </div>
-
+      <section id="paket">
       <Product />
-
-     
+      </section>
+      <section id="faq">
+        <QuestionSection />
+      </section>
     </div>
   );
 }

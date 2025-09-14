@@ -33,11 +33,11 @@ const Product = () => {
   return (
     <div>
        {/* Paket Internet */}
-      <section id="paket" className="py-20 bg-gray-50">
+      <section id="#paket" className="py-20 ">
         <div className="container mx-auto px-6">
-          <h2 className=" text-2xl md:text-4xl font-bold text-center text-gray-800 mb-14">
+          <h2 className="  md:text-3xl font-bold text-center text-3xl  text-transparent bg-clip-text bg-gradient-to-br from-indigo-950 to-blue-700  mb-14">
             Pilihan Paket Internet{" "}
-            <span className="text-blue-900">Terpopuler</span>
+            <span className="">Terpopuler</span>
           </h2>
 
           <div className="grid md:grid-cols-3 gap-5 p-4 md:max-w-5xl mx-auto">

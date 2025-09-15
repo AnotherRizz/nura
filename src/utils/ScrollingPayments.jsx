@@ -43,7 +43,7 @@ export default function ScrollingPayments({ icons = [], speed = 20000 }) {
                 <img
                   src={icon.src}
                   alt={icon.alt}
-                  className=" w-24 object-contain"
+                  className=" w-20 object-contain"
                   draggable="false"
                 />
               </div>

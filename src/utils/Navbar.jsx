@@ -135,7 +135,7 @@ export default function Navbar() {
                   asChild
                   className={navigationMenuTriggerStyle()}
                 >
-                  <a href="https://wa.me/6281281338001" target="_blank">
+                  <a href="https://wa.me/6282323239243" target="_blank">
                     <Button className="text-xs bg-gradient-to-r from-indigo-800 to-blue-900 hover:text-white cursor-pointer">
                       Hubungi Kami
                     </Button>

@@ -12,7 +12,7 @@ const Footer = () => {
           Hubungi tim kami sekarang dan rasakan pengalaman browsing tanpa batas.
         </p>
         <a
-          href="#"
+          href="https://wa.me/6282323239243" target="_blank"
           className="bg-white text-indigo-700 font-semibold px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition">
           Hubungi Kami
         </a>
@@ -26,39 +26,45 @@ const Footer = () => {
               <a
                 href="/"
                 className="flex items-center justify-center md:justify-start">
-                <img
-                  src="/images/nura-logo.png"
-                  className="h-8 me-3"
-                  alt="Logo"
-                />
-                <span className="text-2xl font-semibold text-white">
+                <img src="./logo.png" className="h-8 me-3" alt="Logo" />
+                <span className="text-2xl italic font-semibold text-white">
                   Nura Net
                 </span>
               </a>
+              <p className="text-sm text-slate-600">
+                Jalan jombang raya no 148, Jl. Jombang Raya No.12, <br />
+                Jombang, Kec. Ciputat, Kota Tangerang Selatan, Banten 15414
+              </p>
             </div>
             <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div>
                 <h2 className="mb-4 text-sm font-semibold uppercase text-white">
-                  Resources
+                  Tautan
                 </h2>
                 <ul>
                   <li>
-                    <a
-                      href="https://tailwindcss.com"
-                      className="hover:underline">
-                      Tailwind CSS
+                    <a href="#home" className="hover:underline text-sm">
+                      Home
                     </a>
                   </li>
-                </ul>
-              </div>
-              <div>
-                <h2 className="mb-4 text-sm font-semibold uppercase text-white">
-                  Follow Us
-                </h2>
-                <ul>
                   <li>
-                    <a href="https://github.com" className="hover:underline">
-                      Github
+                    <a href="#about" className="hover:underline text-sm">
+                      Tentang Kami
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#paket" className="hover:underline text-sm">
+                      Paket
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#pembayaran" className="hover:underline text-sm">
+                      Pembayaran
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#faq" className="hover:underline text-sm">
+                      FAQ
                     </a>
                   </li>
                 </ul>

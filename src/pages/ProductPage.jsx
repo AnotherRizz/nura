@@ -8,6 +8,7 @@ const ProductPage = () => {
         <div className=''>
 
         <h1 className='text-3xl font-bold'>Pilih Kecepatan <br/> Sesuai Kebutuhan Anda</h1>
+        <img src="./paket.svg" alt="" />
         </div>
         <div className='col-span-2 p-3'>
         <Internet/>

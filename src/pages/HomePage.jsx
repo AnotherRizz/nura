@@ -7,6 +7,7 @@ import Product from "../section/Product";
 import Payments from "../section/Payments";
 import FeatureSection from "../section/FeatureSection";
 import QuestionSection from "../section/QuestionSection";
+import ChatSupport from "../utils/ChatSupport";
 
 const items = [
   {
@@ -27,15 +28,12 @@ export default function HomePage() {
   return (
     <div className="font-inter">
       {/* Tombol CS */}
-      <span className="fixed bottom-6 right-6 z-50 cursor-pointer">
-        <img src="/images/cs.svg" className="w-12 z-50" alt="CS" />
-      </span>
+     <ChatSupport/>
       <span className="w-full min-h-screen bg-gradient-to-br from-white to-sky-100/50 block fixed top-0 -z-10 left-0"></span>
 
       {/* Hero Section */}
       <section id="home">
-
-      <MainSection />
+        <MainSection />
       </section>
 
       {/* <FeaturesSection /> */}
@@ -43,11 +41,11 @@ export default function HomePage() {
         <FeatureSection />
       </section>
       <section id="pembayaran">
-      <Payments />
+        <Payments />
       </section>
 
       <section id="paket">
-      <Product />
+        <Product />
       </section>
       <section id="faq">
         <QuestionSection />

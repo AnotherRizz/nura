@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "@/components/ui/accordion"
 
 const QuestionSection = () => {
   const data = [
@@ -54,14 +54,14 @@ const QuestionSection = () => {
     <div className=" w-full p-3 md:max-w-4xl mx-auto py-10 ">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
         <div>
-          {data.map((item) => (
             <Accordion type="single" collapsible>
+          {data.map((item) => (
               <AccordionItem value={`item-${item.id}`}>
                 <AccordionTrigger>{item.question}</AccordionTrigger>
                 <AccordionContent>{item.answer}</AccordionContent>
               </AccordionItem>
-            </Accordion>
           ))}
+            </Accordion>
         </div>
         <div className="hidden md:block">
           <img src="./qna.svg" alt="" />

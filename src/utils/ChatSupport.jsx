@@ -83,7 +83,7 @@ const ChatSupport = () => {
       {/* Tombol Chat */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 bg-blue-800 p-4 rounded-full text-white shadow-lg hover:bg-blue-900 transition"
+        className="fixed bottom-6 cursor-pointer right-6 z-50 bg-blue-800 p-4 rounded-full text-white shadow-lg hover:bg-blue-900 transition"
       >
         {open ? (
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

@@ -3,7 +3,6 @@
 
 
 
-import React from 'react'
 import ScrollingPayments from '../utils/ScrollingPayments';
 
 const Payments = () => {

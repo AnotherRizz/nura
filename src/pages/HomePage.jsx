@@ -1,6 +1,5 @@
 import { useState } from "react";
 import MainSection from "../section/MainSection";
-import FeaturesSection from "../section/FeaturesSection";
 import Carousel from "../utils/Carousel";
 import StatsParallax from "../utils/StatsParallax";
 import Product from "../section/Product";

@@ -1,36 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import InternetCard from "../utils/InternetCard";
-
-const tabsData = [
-  {
-    icon: "/banner/internet.jpg",
-    label: "Paket Bronze",
-    price: "Rp 270.000 / bulan",
-    speed: "50 Mbps",
-    fup: "1 - 10 Devices",
-    support: "08.00 - 22.00",
-    desc: "Cocok untuk kebutuhan dasar rumah tangga: browsing, streaming ringan, dan video call.",
-  },
-  {
-    icon: "/banner/internet.jpg",
-    label: "Paket Silver",
-    price: "Rp 335.000 / bulan",
-    speed: "100 Mbps",
-    fup: "1 - 15 Devices",
-    support: "24/7 Support",
-    desc: "Kecepatan stabil untuk streaming Full HD, gaming online ringan, dan kerja jarak jauh.",
-  },
-  {
-    icon: "/banner/internet.jpg",
-    label: "Paket Gold",
-    price: "Rp 6000.000 / bulan",
-    speed: "150 Mbps",
-    fup: "1 - 20 Devices",
-    support: "Priority 24/7 Support",
-    desc: "Performa premium untuk rumah besar, bisnis rumahan, dan streaming 4K tanpa buffering.",
-  },
-];
+import { Data } from "../data/Paket";
 
 export default function Internet() {
   const [selectedTab, setSelectedTab] = useState(tabsData[0]);
@@ -41,7 +12,7 @@ export default function Internet() {
 
         {/* Tabs */}
         <div className="flex justify-center gap-4 mb-10">
-          {tabsData.map((tab) => (
+          {Data.map((tab) => (
             <motion.button
               key={tab.label}
               onClick={() => setSelectedTab(tab)}

@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div>
       {/* CTA */}
-      <section className="bg-gradient-to-b from-indigo-900 to-blue-700 text-white py-16 text-center">
+      <section className="bg-gradient-to-br from-indigo-950 to-blue-800  text-white py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">
           Siap Nikmati Internet Super Cepat?
         </h2>

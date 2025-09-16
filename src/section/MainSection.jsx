@@ -1,8 +1,11 @@
-import React from "react"
-import { motion } from "framer-motion"
-import StatsParallaxFull from "../utils/StatsParallax"
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import StatsParallaxFull from "../utils/StatsParallax";
 
 const MainSection = () => {
+  const MotionLink = motion(Link);
+
   return (
     <section className="min-h-screen flex items-center py-20 relative overflow-hidden">
       <span className="w-80 h-80 absolute hidden md:block top-60 right-80 bg-gradient-to-br from-indigo-200 to-teal-300 rounded-full blur-md opacity-50"></span>
@@ -44,16 +47,29 @@ const MainSection = () => {
             bisnis Anda.
           </motion.p>
 
-          <motion.a
-            href="#paket"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="w-fit mx-auto md:mx-0 flex gap-2 bg-gradient-to-br from-indigo-950 to-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition"
-          >
-            Lihat Paket Internet
-          </motion.a>
+          <div className="flex gap-2">
+            <motion.a
+              href="#paket"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="w-fit mx-auto md:mx-0 flex gap-2 bg-gradient-to-br from-indigo-950 to-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transition"
+            >
+              Lihat Paket Internet
+            </motion.a>
+
+            <MotionLink
+              to="/register"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="w-fit mx-auto md:mx-0 flex gap-2 text-transparent bg-clip-text bg-gradient-to-br from-indigo-950 to-blue-700 font-semibold px-4 py-2 rounded-lg border border-indigo-800 transition"
+            >
+              Daftar Sekarang
+            </MotionLink>
+          </div>
 
           <StatsParallaxFull />
         </motion.div>
@@ -74,7 +90,7 @@ const MainSection = () => {
         </motion.div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default MainSection
+export default MainSection;

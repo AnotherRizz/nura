@@ -55,7 +55,7 @@ const ChatSupport = () => {
           response = "Kamu bisa melakukan pembayaran lewat transfer bank atau e-wallet.";
           break;
         default:
-          response = "Silakan hubungi admin untuk informasi lebih lanjut.";
+          response = "Maaf, menu tersebut belum tersedia.";
       }
 
       setLoading(false);

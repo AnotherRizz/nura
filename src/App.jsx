@@ -3,6 +3,7 @@ import Navbar from "./utils/Navbar";
 import Footer from "./utils/Footer";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/register" element={<RegisterPage  />} />
       </Route>
 
       {/* Route tanpa layout */}

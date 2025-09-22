@@ -4,6 +4,7 @@ import Footer from "./utils/Footer";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import RegisterPage from "./pages/RegisterPage";
+import Success from "./pages/Success";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/product" element={<ProductPage />} />
         <Route path="/register" element={<RegisterPage  />} />
       </Route>
+        <Route path="/success" element={<Success />} />
 
       {/* Route tanpa layout */}
       <Route path="*" element={<NotFound />} />

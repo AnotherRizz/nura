@@ -78,7 +78,7 @@ const FeatureSection = () => {
               transition={{ duration: 0.6, delay: i * 0.2 }}
               viewport={{ once: true }}
               className="flex gap-7 md:items-center">
-              <div className="bg-gradient-to-br from-indigo-950 to-blue-700 text-white rounded-2xl p-2">
+              <div className="bg-gradient-to-br from-indigo-950 to-blue-700 h-fit text-white rounded-2xl p-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

@@ -19,7 +19,7 @@ const Payments = () => {
 ];
   return (
     <div className="py-12">
-      <ScrollingPayments icons={icons} speed={18000} />
+      <ScrollingPayments icons={icons} speed={7000} />
       
     </div>
   )

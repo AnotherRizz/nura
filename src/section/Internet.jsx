@@ -4,7 +4,7 @@ import InternetCard from "../utils/InternetCard";
 import { Data } from "../data/Paket";
 
 export default function Internet() {
-  const [selectedTab, setSelectedTab] = useState(tabsData[0]);
+  const [selectedTab, setSelectedTab] = useState(Data[0]);
 
   return (
     <section className="py-12 min-h-screen bg-gray-50">

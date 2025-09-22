@@ -8,7 +8,7 @@ const MainSection = () => {
 
   return (
     <section className="min-h-screen flex items-center py-20 relative overflow-hidden">
-      <span className="w-80 h-80 absolute hidden md:block top-60 right-80 bg-gradient-to-br from-indigo-200 to-teal-300 rounded-full blur-md opacity-50"></span>
+      {/* <span className="w-80 h-80 absolute hidden md:block top-60 right-80 bg-gradient-to-br from-indigo-200 to-teal-300 rounded-full blur-md opacity-50"></span> */}
 
       <div className="container z-10 mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Bagian teks */}
@@ -17,7 +17,7 @@ const MainSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="text-center md:text-left"
+          className="text-left"
         >
           <motion.h1
             initial={{ opacity: 0, x: -40 }}
@@ -83,9 +83,9 @@ const MainSection = () => {
           className="flex justify-center md:justify-end"
         >
           <img
-            src="./banner1.png"
+            src="./side.png"
             alt="Banner Internet"
-            className="w-full max-w-md md:max-w-xl -mt-10 drop-shadow-2xl"
+            className="w-full max-w-sm md:max-w-md mx-auto -mt-6 rounded-3xl drop-shadow-2xl"
           />
         </motion.div>
       </div>

@@ -22,7 +22,7 @@ export default function InternetCard({ label, price, desc, speed, fup, support }
       </ul>
 
       <a
-        href={`https://wa.me/${nomorWA}?text=${pesanWA}`}
+        href="/register"
         target="_blank"
         rel="noopener noreferrer"
         className="block w-full text-sm px-3 py-1.5 rounded-lg bg-gradient-to-br from-indigo-950 to-blue-700 text-white text-center hover:opacity-90 transition"

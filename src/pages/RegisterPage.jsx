@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Data } from "../data/Paket";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
@@ -12,37 +11,75 @@ export default function RegisterPage() {
   const [paketTersedia, setPaketTersedia] = useState([]);
   const [paketDipilih, setPaketDipilih] = useState(null);
   const [step, setStep] = useState(1);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+// --- STATE TAMBAHAN ---
+const [modalMessage, setModalMessage] = useState(""); // isi pesan
+const [modalType, setModalType] = useState(""); // tipe pesan
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // radius bumi dalam KM
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // hasil dalam KM
+  }
+
+  // === ambil paket dari backend sesuai kota ===
   const temukanLokasi = () => {
     setLoading(true);
-    if (!navigator.geolocation) {
-      alert("Browser tidak mendukung Geolocation");
-      setLoading(false);
-      return;
-    }
-
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
+
       try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-        );
-        const data = await res.json();
-        const alamatLengkap = data.display_name;
-        const kotaSekarang =
-          data.address.city || data.address.town || data.address.village || "";
+        // ambil semua area + paket dari API
+        const res = await fetch("/api/area");
+        const areaJson = await res.json();
 
-        setAlamat(alamatLengkap);
-        setKota(kotaSekarang);
+        // filter area berdasarkan radius
+        let paketDitemukan = [];
+        areaJson.data.forEach((area) => {
+          const distance = haversineDistance(
+            latitude,
+            longitude,
+            area.latitude,
+            area.longitude
+          );
+          if (distance <= area.radius) {
+            area.paket.forEach((p) => {
+              paketDitemukan.push(p.paket);
+            });
+          }
+        });
 
-        const tersedia = Data.filter((p) =>
-          p.coverage.some((c) =>
-            kotaSekarang.toLowerCase().includes(c.toLowerCase())
-          )
+        setPaketTersedia(paketDitemukan);
+
+        // 🔥 ambil alamat dari latitude & longitude
+        const geoRes = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
         );
-        setPaketTersedia(tersedia);
+        const geoData = await geoRes.json();
+
+        if (geoData?.display_name) {
+          setAlamat(geoData.display_name); // alamat jalan beneran
+        } else {
+          setAlamat(`${latitude}, ${longitude}`); // fallback
+        }
+
+        // tetap simpan koordinat ke state hidden input
+        setLatitude(latitude);
+        setLongitude(longitude);
       } catch (err) {
         console.error(err);
       } finally {
@@ -60,20 +97,54 @@ export default function RegisterPage() {
     setStep(3);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (loading) return;
+  setLoading(true);
+  setModalMessage("");
+  setModalType("");
 
-    // simulasi proses submit (misal ke API)
-    setTimeout(() => {
-      setLoading(false);
+  try {
+    const res = await fetch("/api/userRegistration", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nama: e.target.nama.value,
+        no_wa: e.target.no_wa.value,
+        alamat,
+        paketId: paketDipilih.id,
+        latitude,
+        longitude,
+      }),
+    });
+
+    const data = await res.json(); // backend pasti balikin {error: "..."} atau data user
+
+    if (!res.ok) {
+      setModalType("error");
+      setModalMessage(data.error || "Gagal mengirim pendaftaran.");
       setShowModal(true);
-    }, 2500); // 1.5 detik loading
-  };
+      return;
+    }
+
+    setModalType("success");
+    setModalMessage("Pendaftaran berhasil 🎉. Kami akan segera menghubungi Anda.");
+    setShowModal(true);
+  } catch (err) {
+    console.error(err);
+    setModalType("error");
+    setModalMessage("Terjadi kesalahan jaringan. Silakan coba lagi.");
+    setShowModal(true);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   const handleSelesai = () => {
     setShowModal(false);
-    navigate("/success"); // arahkan ke halaman lain
+    navigate("/success");
   };
 
   const kembaliKePaket = () => {
@@ -229,12 +300,12 @@ export default function RegisterPage() {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="size-6 text-yellow-500">
+                      className="size-6 text-yellow-500">
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"
                       />
                     </svg>
@@ -261,10 +332,12 @@ export default function RegisterPage() {
                       transition={{ duration: 0.3 }}
                       className="border rounded-xl p-4 shadow cursor-pointer hover:border-teal-600"
                       onClick={() => handlePilihPaket(paket)}>
-                      <h3 className="font-semibold text-lg">{paket.label}</h3>
+                      <h3 className="font-semibold text-lg">
+                        {paket.nama_paket}
+                      </h3>
                       <p className="text-sm text-gray-600">{paket.speed}</p>
                       <p className="text-teal-600 font-semibold">
-                        {paket.price}
+                        Rp {paket.harga.toLocaleString("id-ID")}
                       </p>
                     </motion.div>
                   ))}
@@ -296,10 +369,13 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium mb-1">Nama</label>
                 <input
                   type="text"
+                  name="nama"
                   required
                   className="w-full px-3 py-2 border rounded-lg"
                 />
               </div>
+              <input type="hidden" name="latitude" value={latitude} />
+              <input type="hidden" name="longitude" value={longitude} />
 
               <div>
                 <label className="block text-sm font-medium mb-1">
@@ -307,6 +383,7 @@ export default function RegisterPage() {
                 </label>
                 <input
                   type="tel"
+                  name="no_wa"
                   pattern="[0-9]+"
                   required
                   className="w-full px-3 py-2 border rounded-lg"
@@ -332,7 +409,7 @@ export default function RegisterPage() {
                 </label>
                 <input
                   type="text"
-                  value={paketDipilih?.label || ""}
+                  value={paketDipilih?.nama_paket || ""}
                   readOnly
                   className="w-full px-3 py-2 border rounded-lg bg-gray-100"
                 />
@@ -359,24 +436,36 @@ export default function RegisterPage() {
             </form>
           )}
           {showModal && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-              <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full text-center">
-                <h2 className="text-2xl font-bold text-black mb-3">
-                  Pendaftaran Berhasil 🎉
-                </h2>
-                <p className="text-gray-600 text-sm mb-6">
-                  Terima kasih, data Anda sudah tersimpan.
-                  <br />
-                  Kami akan segera menghubungi Anda.
-                </p>
-                <button
-                  onClick={handleSelesai}
-                  className="px-4 py-2 cursor-pointer bg-gradient-to-br from-teal-600 to-sky-500 text-white rounded-md font-semibold">
-                  Selesai
-                </button>
-              </div>
-            </div>
-          )}
+  <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+    <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full text-center">
+      <h2
+        className={`text-2xl font-bold mb-3 ${
+          modalType === "success" ? "text-teal-600" : "text-red-600"
+        }`}
+      >
+        {modalType === "success" ? "Berhasil" : "Gagal"}
+      </h2>
+      <p className="text-gray-600 text-sm mb-6">{modalMessage}</p>
+
+      {modalType === "success" ? (
+        <button
+          onClick={handleSelesai}
+          className="px-4 py-2 bg-gradient-to-br from-teal-600 to-sky-500 text-white rounded-md font-semibold"
+        >
+          Selesai
+        </button>
+      ) : (
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-4 py-2 bg-red-500 text-white rounded-md font-semibold"
+        >
+          Tutup
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
         </div>
       </div>
     </div>

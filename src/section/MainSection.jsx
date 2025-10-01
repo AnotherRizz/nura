@@ -1,14 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import StatsParallaxFull from "../utils/StatsParallax";
 
 const MainSection = () => {
   const MotionLink = motion(Link);
 
+  // Ambil progress scroll (0 → 1)
+  const { scrollY } = useScroll();
+
+  // Gerakin posisi background sesuai scroll
+  const yParallax1 = useTransform(scrollY, [0, 500], [0, 100]); // blob 1
+  const yParallax2 = useTransform(scrollY, [0, 500], [0, -80]); // blob 2
+
   return (
     <section className="min-h-screen flex items-center py-20 relative overflow-hidden">
-      {/* <span className="w-80 h-80 absolute hidden md:block top-60 right-80 bg-gradient-to-br from-indigo-200 to-teal-300 rounded-full blur-md opacity-50"></span> */}
+      {/* Blob 1 */}
+      <motion.div
+        className="w-80 h-80 absolute top-40 -left-32 bg-gradient-to-br from-indigo-300 to-blue-500 rounded-full blur-3xl opacity-40"
+        style={{ y: yParallax1 }}
+        animate={{ y: [0, -30, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* Blob 2 */}
+      <motion.div
+        className="w-96 h-96 absolute bottom-20 right-0 bg-gradient-to-br from-cyan-300 to-blue-500 rounded-full blur-3xl opacity-40"
+        style={{ y: yParallax2 }}
+        animate={{ y: [0, 40, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <div className="container z-10 mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         {/* Bagian teks */}

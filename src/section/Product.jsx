@@ -10,9 +10,23 @@ const Product = () => {
   useEffect(() => {
     const fetchPaket = async () => {
       try {
-        const res = await fetch("/api/paket");
-        const json = await res.json();
-        setPaket(json.data);
+        const url = `${
+          import.meta.env.VITE_PUBLIC_SUPABASE_URL
+        }/rest/v1/Paket?select=*`;
+
+        const res = await fetch(url, {
+          headers: {
+            apikey: import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${
+              import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY
+            }`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Gagal fetch paket dari Supabase");
+
+        const data = await res.json();
+        setPaket(data); // Supabase REST langsung return array
       } catch (err) {
         console.error("Gagal fetch paket:", err);
       } finally {
@@ -46,8 +60,7 @@ const Product = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 whileHover={{ scale: 1.05 }}
-                viewport={{ once: true }}
-              >
+                viewport={{ once: true }}>
                 {index === 1 && (
                   <span className="absolute -top-3 flex gap-2 right-6 bg-red-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
                     ⭐ Populer
@@ -58,36 +71,35 @@ const Product = () => {
                 <p
                   className={`mb-4 ${
                     index === 1 ? "opacity-90 text-xs" : "text-gray-500 text-xs"
-                  }`}
-                >
+                  }`}>
                   {p.deskripsi}
                 </p>
                 <p className="text-2xl md:text-4xl font-extrabold">{p.speed}</p>
                 <p
                   className={`text-sm font-extrabold mb-4 ${
                     index === 1 ? "text-red-500" : "text-rose-500"
-                  }`}
-                >
+                  }`}>
                   Rp {Number(p.harga).toLocaleString("id-ID")}
                   <span className="text-lg font-medium">/bulan</span>
                 </p>
                 <ul
                   className={`mb-6 space-y-2 text-xs ${
                     index === 1 ? "opacity-90" : "text-gray-600"
-                  }`}
-                >
-                  {p.fitur?.map((f, i) => (
-                    <li key={i}>{f}</li>
-                  ))}
+                  }`}>
+                  {Array.isArray(p.fitur) ? (
+                    p.fitur.map((f, i) => <li key={i}>{f}</li>)
+                  ) : (
+                    <li>{p.fitur}</li>
+                  )}
                 </ul>
+
                 <a
-                  href={`/product/${p.id}`}
+                  href={`/product`}
                   className={`px-6 py-1.5 rounded-lg font-semibold transition ${
                     index === 1
                       ? "bg-white text-blue-600 hover:bg-gray-100"
                       : "bg-gradient-to-br from-indigo-950 to-blue-700 text-white"
-                  }`}
-                >
+                  }`}>
                   Lihat Detail
                 </a>
               </motion.div>

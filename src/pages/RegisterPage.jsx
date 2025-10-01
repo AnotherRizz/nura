@@ -3,53 +3,52 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import supabase from "../services/supabaseClient";
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [alamat, setAlamat] = useState("");
-  const [kota, setKota] = useState("");
   const [paketTersedia, setPaketTersedia] = useState([]);
   const [paketDipilih, setPaketDipilih] = useState(null);
   const [step, setStep] = useState(1);
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-// --- STATE TAMBAHAN ---
-const [modalMessage, setModalMessage] = useState(""); // isi pesan
-const [modalType, setModalType] = useState(""); // tipe pesan
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalType, setModalType] = useState("");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  // === helper jarak ===
   function haversineDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371; // radius bumi dalam KM
+    const R = 6371; // km
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
-
     const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLat / 2) ** 2 +
       Math.cos((lat1 * Math.PI) / 180) *
         Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // hasil dalam KM
+        Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   }
 
-  // === ambil paket dari backend sesuai kota ===
+  // === cari lokasi & paket ===
   const temukanLokasi = () => {
     setLoading(true);
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
 
       try {
-        // ambil semua area + paket dari API
-        const res = await fetch("/api/area");
-        const areaJson = await res.json();
+        // 🔥 ambil area + paket langsung dari supabase
+        const { data: areaData, error } = await supabase
+          .from("Area")
+          .select(
+            "id,nama_area,latitude,longitude,radius,PaketArea(paket:paketId(*))"
+          );
 
-        // filter area berdasarkan radius
+        if (error) throw error;
+
         let paketDitemukan = [];
-        areaJson.data.forEach((area) => {
+        areaData.forEach((area) => {
           const distance = haversineDistance(
             latitude,
             longitude,
@@ -57,31 +56,25 @@ const [modalType, setModalType] = useState(""); // tipe pesan
             area.longitude
           );
           if (distance <= area.radius) {
-            area.paket.forEach((p) => {
-              paketDitemukan.push(p.paket);
+            area.PaketArea.forEach((pa) => {
+              paketDitemukan.push(pa.paket);
             });
           }
         });
 
         setPaketTersedia(paketDitemukan);
 
-        // 🔥 ambil alamat dari latitude & longitude
+        // 🔥 ambil alamat dari nominatim
         const geoRes = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
         );
         const geoData = await geoRes.json();
 
-        if (geoData?.display_name) {
-          setAlamat(geoData.display_name); // alamat jalan beneran
-        } else {
-          setAlamat(`${latitude}, ${longitude}`); // fallback
-        }
-
-        // tetap simpan koordinat ke state hidden input
+        setAlamat(geoData?.display_name || `${latitude}, ${longitude}`);
         setLatitude(latitude);
         setLongitude(longitude);
       } catch (err) {
-        console.error(err);
+        console.error("Gagal fetch area:", err);
       } finally {
         setLoading(false);
       }
@@ -97,50 +90,48 @@ const [modalType, setModalType] = useState(""); // tipe pesan
     setStep(3);
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (loading) return;
-  setLoading(true);
-  setModalMessage("");
-  setModalType("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    setModalMessage("");
+    setModalType("");
 
-  try {
-    const res = await fetch("/api/userRegistration", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        nama: e.target.nama.value,
-        no_wa: e.target.no_wa.value,
-        alamat,
-        paketId: paketDipilih.id,
-        latitude,
-        longitude,
-      }),
-    });
+    try {
+      const { error } = await supabase.from("UserRegistration").insert([
+        {
+          nama: e.target.nama.value,
+          no_wa: e.target.no_wa.value,
+          alamat,
+          paketId: paketDipilih.id,
+          latitude,
+          longitude,
+          detailAlamat: "",
+          // jangan kirim createdAt, updatedAt, status (biar DB isi otomatis)
+        },
+      ]);
 
-    const data = await res.json(); // backend pasti balikin {error: "..."} atau data user
+      if (error) {
+        setModalType("error");
+        setModalMessage(error.message || "Gagal mengirim pendaftaran.");
+        setShowModal(true);
+        return;
+      }
 
-    if (!res.ok) {
-      setModalType("error");
-      setModalMessage(data.error || "Gagal mengirim pendaftaran.");
+      setModalType("success");
+      setModalMessage(
+        "Pendaftaran berhasil 🎉. Kami akan segera menghubungi Anda."
+      );
       setShowModal(true);
-      return;
+    } catch (err) {
+      console.error(err);
+      setModalType("error");
+      setModalMessage("Terjadi kesalahan jaringan. Silakan coba lagi.");
+      setShowModal(true);
+    } finally {
+      setLoading(false);
     }
-
-    setModalType("success");
-    setModalMessage("Pendaftaran berhasil 🎉. Kami akan segera menghubungi Anda.");
-    setShowModal(true);
-  } catch (err) {
-    console.error(err);
-    setModalType("error");
-    setModalMessage("Terjadi kesalahan jaringan. Silakan coba lagi.");
-    setShowModal(true);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   const handleSelesai = () => {
     setShowModal(false);
@@ -154,7 +145,6 @@ const [modalType, setModalType] = useState(""); // tipe pesan
   const kembaliKe1 = () => {
     setStep(1);
   };
-
   return (
     <div className="min-h-screen items-center mt-14 mx-auto bg-neutral-100">
       {/* Banner */}
@@ -436,36 +426,32 @@ const [modalType, setModalType] = useState(""); // tipe pesan
             </form>
           )}
           {showModal && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-    <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full text-center">
-      <h2
-        className={`text-2xl font-bold mb-3 ${
-          modalType === "success" ? "text-teal-600" : "text-red-600"
-        }`}
-      >
-        {modalType === "success" ? "Berhasil" : "Gagal"}
-      </h2>
-      <p className="text-gray-600 text-sm mb-6">{modalMessage}</p>
+            <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+              <div className="bg-white p-6 rounded-xl shadow-lg max-w-sm w-full text-center">
+                <h2
+                  className={`text-2xl font-bold mb-3 ${
+                    modalType === "success" ? "text-teal-600" : "text-red-600"
+                  }`}>
+                  {modalType === "success" ? "Berhasil" : "Gagal"}
+                </h2>
+                <p className="text-gray-600 text-sm mb-6">{modalMessage}</p>
 
-      {modalType === "success" ? (
-        <button
-          onClick={handleSelesai}
-          className="px-4 py-2 bg-gradient-to-br from-teal-600 to-sky-500 text-white rounded-md font-semibold"
-        >
-          Selesai
-        </button>
-      ) : (
-        <button
-          onClick={() => setShowModal(false)}
-          className="px-4 py-2 bg-red-500 text-white rounded-md font-semibold"
-        >
-          Tutup
-        </button>
-      )}
-    </div>
-  </div>
-)}
-
+                {modalType === "success" ? (
+                  <button
+                    onClick={handleSelesai}
+                    className="px-4 py-2 bg-gradient-to-br from-teal-600 to-sky-500 text-white rounded-md font-semibold">
+                    Selesai
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 bg-red-500 text-white rounded-md font-semibold">
+                    Tutup
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -53,7 +53,7 @@ export default function Navbar() {
   return (
     <nav
       className={`w-full fixed top-0 left-0 z-50 font-inter transition-colors duration-300 ${
-        isScrolled ? "bg-white " : "bg-transparent"
+        isScrolled ? "bg-white/95 " : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between md:justify-around px-6 py-3">

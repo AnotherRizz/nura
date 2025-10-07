@@ -90,15 +90,18 @@ export default function RegisterPage() {
     setStep(3);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-    setModalMessage("");
-    setModalType("");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (loading) return;
+  setLoading(true);
+  setModalMessage("");
+  setModalType("");
 
-    try {
-      const { error } = await supabase.from("UserRegistration").insert([
+  try {
+    // === 1️⃣ Insert ke Supabase ===
+    const { data, error } = await supabase
+      .from("UserRegistration")
+      .insert([
         {
           nama: e.target.nama.value,
           no_wa: e.target.no_wa.value,
@@ -107,31 +110,52 @@ export default function RegisterPage() {
           latitude,
           longitude,
           detailAlamat: "",
-          // jangan kirim createdAt, updatedAt, status (biar DB isi otomatis)
         },
-      ]);
+      ])
+      .select()
+      .single();
 
-      if (error) {
-        setModalType("error");
-        setModalMessage(error.message || "Gagal mengirim pendaftaran.");
-        setShowModal(true);
-        return;
+    if (error) throw new Error(error.message || "Gagal menyimpan data pendaftaran");
+
+    // === 2️⃣ Panggil Edge Function untuk kirim notifikasi WA ===
+    try {
+      const res = await fetch("https://fffzifpspmyhehqhrbtm.supabase.co/functions/v1/notify-cs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          nama: data.nama,
+          no_wa: data.no_wa,
+          alamat: data.alamat,
+          paket: paketDipilih.nama_paket,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        console.error("Gagal kirim ke Edge Function:", err);
       }
-
-      setModalType("success");
-      setModalMessage(
-        "Pendaftaran berhasil 🎉. Kami akan segera menghubungi Anda."
-      );
-      setShowModal(true);
     } catch (err) {
-      console.error(err);
-      setModalType("error");
-      setModalMessage("Terjadi kesalahan jaringan. Silakan coba lagi.");
-      setShowModal(true);
-    } finally {
-      setLoading(false);
+      console.error("Edge Function error:", err.message);
     }
-  };
+
+    // === 3️⃣ Tampilkan modal sukses ===
+    setModalType("success");
+    setModalMessage("Pendaftaran berhasil 🎉. Kami akan segera menghubungi Anda.");
+    setShowModal(true);
+  } catch (err) {
+    console.error("Error submit:", err);
+    setModalType("error");
+    setModalMessage(err.message || "Terjadi kesalahan saat menyimpan data.");
+    setShowModal(true);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   const handleSelesai = () => {
     setShowModal(false);

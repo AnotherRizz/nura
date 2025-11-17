@@ -117,7 +117,6 @@ export default function RegisterPage() {
 
     if (error) throw new Error(error.message || "Gagal menyimpan data pendaftaran");
 
-    // === 2️⃣ Panggil Edge Function untuk kirim notifikasi WA ===
     try {
       const res = await fetch("https://fffzifpspmyhehqhrbtm.supabase.co/functions/v1/notify-cs", {
         method: "POST",

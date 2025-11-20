@@ -1,36 +1,60 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO Dasar -->
-    <title>Nura Net</title>
-    <meta name="description" content="Nura Net menyediakan layanan internet cepat dan fleksibel dengan berbagai metode pembayaran." />
-    <meta name="keywords" content="Internet, Provider Internet, Nura Net, Pembayaran Fleksibel, Internet Cepat" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/logo.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/logo512.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/logo512.png" />
+
+    <!-- SEO -->
+    <title>Nura Net - Layanan Internet Cepat & Stabil untuk Rumah dan Bisnis</title>
+    <meta name="description" content="Nura Net menyediakan layanan internet cepat, stabil, dan terjangkau dengan pilihan paket rumahan dan bisnis. Mendukung pembayaran fleksibel dan layanan pelanggan 24/7." />
+    <meta name="keywords" content="ISP, Internet Cepat, Provider Internet, WiFi Rumahan, Internet Murah, Internet Stabil, Fiber Optic, Nura Net" />
     <meta name="author" content="Nura Net" />
 
-    <!-- Open Graph untuk media sosial -->
-    <meta property="og:title" content="Nura Net" />
-    <meta property="og:description" content="Layanan internet cepat dengan berbagai metode pembayaran fleksibel." />
-    <meta property="og:image" content="/vite.svg" />
-    <meta property="og:url" content="https://nuranet.example.com" />
+    <!-- Canonical -->
+    <link rel="canonical" href="https://nura-net.vercel.app" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Nura Net - Internet Cepat & Stabil" />
+    <meta property="og:description" content="Provider internet fiber optic dengan harga terjangkau, stabil, dan layanan profesional." />
+    <meta property="og:image" content="https://nura-net.vercel.app/og-image.png" />
+    <meta property="og:url" content="https://nura-net.vercel.app" />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Nura Net" />
-    <meta name="twitter:description" content="Layanan internet cepat dan fleksibel." />
-    <meta name="twitter:image" content="/vite.svg" />
+    <meta name="twitter:title" content="Nura Net - Internet Cepat & Stabil" />
+    <meta name="twitter:description" content="Internet cepat dan stabil untuk rumah, bisnis, dan UMKM." />
+    <meta name="twitter:image" content="https://nura-net.vercel.app/og-image.png" />
+
+    <!-- Schema.org JSON-LD (SEO Tinggi) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "InternetServiceProvider",
+      "name": "Nura Net",
+      "url": "https://nura-net.vercel.app",
+      "logo": "https://nura-net.vercel.app/logo512.png",
+      "description": "Provider internet cepat dan stabil untuk rumah dan bisnis.",
+      "areaServed": "Indonesia",
+      "sameAs": [
+        "https://facebook.com",
+        "https://instagram.com",
+        "https://tiktok.com"
+      ]
+    }
+    </script>
 
     <!-- Smooth Scroll -->
     <style>
-      html {
-        scroll-behavior: smooth;
-      }
+      html { scroll-behavior: smooth; }
     </style>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
